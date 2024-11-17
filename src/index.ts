@@ -1,34 +1,25 @@
-
 import express from "express";
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+import connectDb from "./config/db";
+import authRoutes from "./routes/authRoutes";
+import contentRoutes from "./routes/contentRoutes";
+import brainRoutes from "./routes/brainRoutes";
+import { authMiddleware } from "./middleware/middleware";
+
+dotenv.config();
 
 const app = express();
 
-app.post("/api/v1/signup", (req, res) => {
+connectDb();
 
-})
+app.use(express.json());
 
-app.post("/api/v1/signin", (req, res) => {
+app.use("/api/v1", authRoutes);
+app.use("/api/v1/content", authMiddleware, contentRoutes);
+app.use("/api/v1/brain", authMiddleware, brainRoutes);
 
-})
-
-app.post("/api/v1/content", (req, res) => {
-
-})
-
-app.get("/api/v1/content", (req, res) => {
-
-})
-
-app.delete("/api/v1/content", (req, res) => {
-
-})
-
-app.post("/api/v1/brain/share", (req, res) => {
-
-})
-
-app.get("/api/v1/brain/:shareLink", (req, res) => {
-
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
