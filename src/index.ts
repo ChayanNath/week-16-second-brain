@@ -10,6 +10,7 @@ import { authMiddleware } from "./middleware/middleware";
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 
 connectDb();
 
